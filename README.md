@@ -3,7 +3,7 @@
 ## Team Information
 **Team:** Group 3  
 
-**Product Owener:**  
+**Product Owner:**  
 **Scrum Master:**  
 **Developer:**  
 **Developer:**  
