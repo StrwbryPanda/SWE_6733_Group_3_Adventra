@@ -1,7 +1,7 @@
 # Adventra
 
 ## Team Information
-**Course:** SWE6733
+**Course:** SWE6733  
 **Team:** Group 3  
 
 **Product Owner:**  
