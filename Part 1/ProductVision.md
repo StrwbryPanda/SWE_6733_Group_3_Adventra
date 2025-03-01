@@ -12,6 +12,6 @@ By the end of this semester, we aim to develop a Minimum Viable Product that all
 
 ### Stakeholders
 - Adventure seekers looking for a partner (primary users)
-- Potential sponsors or investors
+- Potential sponsors, investors, and advertisers
 - Development team, product owner, and scrum master
 
