@@ -17,4 +17,4 @@
 ## Project Management
 
 **Project Management Tool:** Github Projects  
-**Prioritized Backlog:** https://github.com/users/StrwbryPanda/projects/3/views/3
+**Prioritized Backlog/TaskLog:** https://github.com/users/StrwbryPanda/projects/3/views/3
