@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +21,21 @@ class CreateAccountPage extends StatelessWidget {
   }
 }
 
-class CreateAccount extends StatelessWidget {
+class CreateAccount extends StatefulWidget{
+  const CreateAccount({super.key});
+
+  @override
+  State<CreateAccount> createState()=> _CreateAccountState();
+}
+
+class _CreateAccountState extends State<CreateAccount> {
+ 
+ //Controller for text inputs
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();  
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,10 +68,20 @@ class CreateAccount extends StatelessWidget {
               Positioned(
                 left: 326,
                 top: 229,
-                child: Container(
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  //TextField input for First Name input
+                  child: TextField(
+                    controller: firstNameController,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'John',
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -76,10 +101,20 @@ class CreateAccount extends StatelessWidget {
               Positioned(
                 left: 326,
                 top: 333,
-                child: Container(
+                //TextField for Last Name input
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  child: TextField(
+                    controller: lastNameController,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'Doe',
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -99,10 +134,20 @@ class CreateAccount extends StatelessWidget {
               Positioned(
                 left: 326,
                 top: 437,
-                child: Container(
+                //TextField for email input
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  child: TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'example@email.com',
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -122,10 +167,20 @@ class CreateAccount extends StatelessWidget {
               Positioned(
                 left: 326,
                 top: 541,
-                child: Container(
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                //TextField for password input
+                  child: TextField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                  ),
                 ),
               ),
               Positioned(

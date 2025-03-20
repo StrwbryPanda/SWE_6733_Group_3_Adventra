@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 import 'createaccount.dart';
 import 'package:swe_6733_group_3_adventura/createaccount.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       home: const MyHomePage(title: 'Adventra'),
     );
@@ -56,10 +58,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  //Controller for text inputs
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
  
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+    body: Center(
+    child: Column(
       children: [
         Container(
           width: 1280,
@@ -125,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Positioned(
                 left: 729,
                 top: 563,
-                //Makes button able to be tapped by using GestureDetector
+                //Makes button able to be tapped by using GestureDetector for Create Account Page
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -148,10 +156,20 @@ class _MyHomePageState extends State<MyHomePage> {
               Positioned(
                 left: 312,
                 top: 252,
-                child: Container(
+                //Code to make TextField for E-Mail input
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  child: TextField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'example@email.com',
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -171,10 +189,20 @@ class _MyHomePageState extends State<MyHomePage> {
               Positioned(
                 left: 312,
                 top: 356,
-                child: Container(
+                //TextField for password input               
+                child: SizedBox(
                   width: 667,
                   height: 60,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  child: TextField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFFD9D9D9),
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -195,6 +223,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ],
+    ),
+    ),
     );
   }
 
