@@ -24,13 +24,11 @@ jobs:
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - name: Checkout full repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Install dependencies
-        run: dart pub get
+        run: |
+              cd $(find /home/runner/work/SWE_6733_Group_3_Adventra -type d -name "swe_6733_group_3_adventra") # Finds the correct directory
+              dart pub get
+    
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
