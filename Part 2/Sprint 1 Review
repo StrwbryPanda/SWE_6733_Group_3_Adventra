@@ -1,0 +1,26 @@
+Sprint Review Summary:
+
+Goal of Sprint 1:
+The goal of our first sprint was to take things slowly and try to really understand how a Jira board could help us accomplish the large task of desigining a mobile app.
+We chose three issues to complete (25 story points):  
+  - Create a firebase account and associated backend
+  - Create the landing page of our mobile app
+  - Implement a log-in/create account feature
+
+What was completed:
+We were able to successfully satsisfy all three issues in our sprint: The landing page UI was completed, and the firebase backend was successfully connected to it to enable
+user authentication for both account creation and logging in.
+
+Challenges:
+This was our teams first development sprint together. Much of the team, before this project, was unexperienced in agile methodologies and the software development life cycle.
+As such, learning to work together as a team presented as one of the larger issues we experienced. It was difficult for our team to migrate away from the "split-up-and-work" approach 
+and work cohesively as a team tackling a larger project. We also experienced issues with getting the project off the ground with the new stack. Our team did not have prior experience with
+any of the languages/frameworks/tools needed for this project, so there was a strong learning curve to using them appropriately.
+
+What Went Well?:
+Even when dealing with entirely new technologies and new work methodologies, the team was able to come together and determine the best way to strart this project. The team as a whole began
+to work together smoothly and communicate with greater detail. As the end of the spring approached, the team really perservered and grew to get a demo started.
+
+Next Sprint:
+While we haven't done official sprint planning for the next sprint yet, as we look ahead the team will begin sprint 2 with strong enthusiasm and confidence. The core logic and functionality of our app will
+soon begin to be developed. We will aim to continue to build on both the technical and collaboration skills that we have gained through the first sprint, and hopefulle we can accomplish even more in the next!
