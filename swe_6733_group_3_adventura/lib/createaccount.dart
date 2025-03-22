@@ -10,6 +10,7 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -32,6 +33,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     super.initState();
     _firstNameController.addListener(_updateFormValidation);
     _lastNameController.addListener(_updateFormValidation);
+    _usernameController.addListener(_updateFormValidation);
     _emailController.addListener(_updateFormValidation);
     _passwordController.addListener(_updateFormValidation);
     _confirmPasswordController.addListener(_updateFormValidation);
@@ -41,6 +43,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -142,6 +145,41 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 102, 0),
+                            width: 2.5,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a username';
+                        }
+                        if (value == 'name') { // FIREBASE AUTH NEEDED
+                          return 'Username already in use';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
@@ -216,7 +254,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             !RegExp(
                               r'[!@#$%^&*(),.?":{}|<>]',
                             ).hasMatch(value)) {
-                            return 'Password must contain at least one uppercase letter, one number, and one special character.';
+                            return 'Password must contain at least one uppercase letter, one number, and one special character';
                             }
                             return null;
                       },

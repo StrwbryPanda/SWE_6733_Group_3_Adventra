@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swe_6733_group_3_adventura/home.dart';
 import 'createaccount.dart';
 
 void main() {
@@ -172,6 +173,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Create an Account'),
+                ),
+              ),
+              SizedBox(height: 20),
+              Align(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ),
+                    );
+                  },
+                  child: Text('Jump to Home >'),
                 ),
               ),
             ],
