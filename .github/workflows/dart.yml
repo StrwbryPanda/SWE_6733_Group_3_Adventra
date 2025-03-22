@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-              cd $(find /home/runner/work/SWE_6733_Group_3_Adventra -type d -name "swe_6733_group_3_adventra") # Finds the correct directory
+              cd $(find /home/runner/work/SWE_6733_Group_3_Adventra -type d -name "swe_6733_group_3_adventra")
               dart pub get
     
 
