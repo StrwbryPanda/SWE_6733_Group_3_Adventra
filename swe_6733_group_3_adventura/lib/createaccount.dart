@@ -105,6 +105,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           ),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ),
@@ -131,6 +137,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           ),
                         ),
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your last name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ),
@@ -215,16 +227,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             !RegExp(
                               r'[!@#$%^&*(),.?":{}|<>]',
                             ).hasMatch(value)) {
-                          setState(() {
-                            _passwordError =
-                                'Password must contain at least one uppercase letter, one number, and one special character.';
-                          });
-                          return '';
-                        }
-                        setState(() {
-                          _passwordError = null;
-                        });
-                        return null;
+                            return 'Password must contain at least one uppercase letter, one number, and one special character.';
+                            }
+                            return null;
                       },
                     ),
                   ),
@@ -260,10 +265,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please re-enter your password';
                         }
-                        else if (value != _password) {
+                        if (value != _password) {
                           return 'The passwords do not match';
                         }
-                        else {return null;}
+                        return null;
                       },
                     ),
                   ),
