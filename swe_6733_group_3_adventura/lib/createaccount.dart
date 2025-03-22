@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({super.key});
+
   @override
   _CreateAccountPageState createState() => _CreateAccountPageState();
 }
@@ -13,14 +15,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool _isEmailValid = false;
-  bool _isFormValid = false;
-
   String? _passwordError;
-  String? _confirmPasswordError;
   String? _password;
-
-
 
   final RegExp _emailRegex = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -28,13 +24,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   void _updateFormValidation() {
     setState(() {
-      _isFormValid =
-          _firstNameController.text.isNotEmpty &&
-          _lastNameController.text.isNotEmpty &&
-          _emailController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
-          _confirmPasswordController.text.isNotEmpty &&
-          _emailController.text.isNotEmpty;
     });
   }
 
@@ -73,7 +62,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             end: Alignment.bottomRight,
             colors: [
               const Color.fromARGB(255, 255, 230, 86),
-              const Color.fromARGB(255, 255, 136, 0),
+              const Color.fromARGB(255, 209, 112, 0),
             ],
           ),
         ),
@@ -83,10 +72,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                SizedBox(height: 20),
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
                       controller: _firstNameController,
                       decoration: InputDecoration(
@@ -118,7 +108,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
                       controller: _lastNameController,
                       decoration: InputDecoration(
@@ -150,7 +140,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -171,7 +161,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          _isEmailValid = _emailRegex.hasMatch(value);
                         });
                         _updateFormValidation();
                       },
@@ -191,7 +180,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
                       controller: _passwordController,
 
@@ -238,7 +227,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
                       controller: _confirmPasswordController,
                       decoration: InputDecoration(
