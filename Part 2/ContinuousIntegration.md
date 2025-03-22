@@ -1,0 +1,1 @@
+The System in place for Continous Integration is hosted via GitHub and is called GitHub Actions. This allows us to build and automatically run test through GitHub whenever changes are pushed. We decided to utlize this tool as it is hosted on GitHub where the project is managed making it easier by staying on a single platform.
