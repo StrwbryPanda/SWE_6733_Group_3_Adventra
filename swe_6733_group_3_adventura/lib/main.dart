@@ -4,11 +4,11 @@ import 'createaccount.dart';
 import 'package:swe_6733_group_3_adventura/createaccount.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   // This widget is the root of your application.
   @override
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 top: 563,
                 child: SizedBox(
                   width: 65,
-                  height: 29,
+                  height: 40,
                   child: Text(
                     'Login',
                     textAlign: TextAlign.center,
@@ -127,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Container(
                   width: 247,
                   height: 68,
-                  decoration: BoxDecoration(color: const Color(0xFFD9D9D9)),
+                  decoration: BoxDecoration(color: const Color.fromARGB(255, 255, 174, 0)),
+              
                 ),
               ),
               Positioned(
