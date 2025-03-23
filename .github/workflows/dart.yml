@@ -28,7 +28,7 @@ jobs:
           flutter-version: '3.29.2'
 
       - name: Move to correct directory
-        run: cd swe_6733_group_3_adventra
+        run: cd swe_6733_group_3_adventura
 
       - name: Install dependencies
         run:  flutter pub get
