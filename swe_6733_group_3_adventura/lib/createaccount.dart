@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -8,6 +9,8 @@ class CreateAccountPage extends StatefulWidget {
 }
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
+  final db = FirebaseFirestore.instance;
+
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _usernameController = TextEditingController();
@@ -303,9 +306,22 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print('Sign up with email: ${_emailController.text}');
-                    }
+                    // if (_formKey.currentState!.validate()) {
+                    //   print('Sign up with email: ${_emailController.text}');
+                    // }
+                    if(_firstNameController.text.isNotEmpty &&
+                      _lastNameController.text.isNotEmpty &&
+                      _usernameController.text.isNotEmpty &&
+                      _emailController.text.isNotEmpty &&
+                      _passwordController.text.isNotEmpty){
+                        db.collection('users').add({
+                          "email" : _emailController.text,
+                          "firstname" : _firstNameController.text,
+                          "lastname" : _lastNameController.text,
+                          "password" : _passwordController.text,
+                          "username" : _usernameController.text
+                        });
+                      }
                   },
                   child: Text('Sign Up'),
                 ),

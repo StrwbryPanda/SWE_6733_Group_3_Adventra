@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721359447910",
+    "project_id": "adventra-490ff",
+    "storage_bucket": "adventra-490ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721359447910:android:c88f0b7e1660bf7d958aa7",
+        "android_client_info": {
+          "package_name": "com.example.swe_6733_group_3_adventura"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6qSVdu77EUCUR18-1KSP14EjVsyGOAFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
