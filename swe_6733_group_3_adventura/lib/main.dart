@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:swe_6733_group_3_adventura/home.dart';
 import 'createaccount.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp(const App());
 }
 
