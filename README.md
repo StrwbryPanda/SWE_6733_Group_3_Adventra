@@ -6,7 +6,7 @@
 **Course:** SWE6733  
 **Team:** Group 3
 
-**Product Owner:** Kylie N.
+**Product Owner:** Kylie N.  
 **Scrum Master:** Will Bryant  
 **Developer:** Moises Valles  
 **Developer:** Jeffrey Sanderson  
