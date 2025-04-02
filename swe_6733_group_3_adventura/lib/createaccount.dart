@@ -60,7 +60,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-        title: Text('Create Account'),
+        title: Text(
+          'Create Account',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Container(

@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -18,6 +20,12 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool _isMalePreferenceSelected = false;
+  bool _isFemalePreferenceSelected = false;
+
+  bool _isMale = false;
+  bool _isFemale = false;
 
   String? _passwordError;
   String? _password;
@@ -57,7 +65,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-        title: Text('Create Profile'),
+        title: Text(
+          'Create Profile',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Container(
@@ -77,39 +88,107 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                
                 SizedBox(height: 20),
                 Align(
                   alignment: Alignment.center,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: TextFormField(
-                      controller: _firstNameController,
-                      decoration: InputDecoration(
-                        labelText: 'First Name',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide(
-                            color: const Color.fromARGB(255, 255, 102, 0),
-                            width: 2.5,
-                          ),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your first name';
-                        }
-                        return null;
-                      },
-                    ),
+                  child: Text(
+                    'How do you identify?',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isMale = !_isMale;
+                          if (_isFemale) {_isFemale = false;}
+                        });
+                      },
+                      foregroundColor:
+                          _isMale ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isMale ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isMale ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.male),
+                    ),
+                    const SizedBox(width: 40.0),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isFemale = !_isFemale;
+                          if (_isMale) {_isMale = false;}
+                        });
+                      },
+                      foregroundColor:
+                          _isFemale ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isFemale ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isFemale ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.female),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Preference',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isMalePreferenceSelected = !_isMalePreferenceSelected;
+                        });
+                      },
+                      foregroundColor:
+                          _isMalePreferenceSelected ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isMalePreferenceSelected ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isMalePreferenceSelected ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.male),
+                    ),
+                    const SizedBox(width: 40.0),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isFemalePreferenceSelected = !_isFemalePreferenceSelected;
+                        });
+                      },
+                      foregroundColor:
+                          _isFemalePreferenceSelected ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isFemalePreferenceSelected ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isFemalePreferenceSelected ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.female),
+                    ),
+                  ],
+                ),
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(

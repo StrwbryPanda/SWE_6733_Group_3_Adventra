@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-enum Filter { Walking, Running, Cycling, Hiking, Swimming, Climbing, Skiing,
-  Snowboarding, Surfing, Skating}
-
-/// Flutter code sample for [NavigationBar].
+enum Filter {
+  Walking,
+  Running,
+  Cycling,
+  Hiking,
+  Swimming,
+  Climbing,
+  Skiing,
+  Snowboarding,
+  Surfing,
+  Skating,
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -27,6 +35,7 @@ class NavigationExample extends StatefulWidget {
 class _NavigationExampleState extends State<NavigationExample> {
   int currentPageIndex = 1;
   Set<Filter> filters = <Filter>{};
+  double _currentRadius = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -86,30 +95,68 @@ class _NavigationExampleState extends State<NavigationExample> {
             Card(
               shadowColor: Colors.transparent,
               margin: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  Text('Choose an exercise'),
-                  const SizedBox(height: 5.0),
-                  Wrap(
-                    children:
-                        Filter.values.map((Filter exercise) {
-                          return FilterChip(
-                            label: Text(exercise.name),
-                            selected: filters.contains(exercise),
-                            onSelected: (bool selected) {
-                              setState(() {
-                                if (selected) {
-                                  filters.add(exercise);
-                                } else {
-                                  filters.remove(exercise);
-                                }
-                              });
-                            },
-                          );
-                        }).toList(),
-                  ),
-                  const SizedBox(height: 10.0),
-                ],
+              child: SizedBox.expand(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Filter Activities',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleLarge,
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Wrap(
+                      children:
+                          Filter.values.map((Filter exercise) {
+                            return FilterChip(
+                              padding: const EdgeInsets.all(8.0),
+                              selectedColor: Color.fromARGB(255, 255, 178, 114),
+                              label: Text(exercise.name),
+                              selected: filters.contains(exercise),
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  if (selected) {
+                                    filters.add(exercise);
+                                  } else {
+                                    filters.remove(exercise);
+                                  }
+                                });
+                              },
+                            );
+                          }).toList(),
+                    ),
+
+                    const SizedBox(height: 40.0),
+
+                    Text(
+                      'Filter Radius',
+                      textAlign: TextAlign.left,
+                      style: theme.textTheme.titleLarge,
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Slider(
+                      value: _currentRadius,
+                      activeColor: Color.fromARGB(255, 255, 167, 85),
+                      max: 200,
+                      onChanged: (double value) {
+                        setState(() {
+                          _currentRadius = value;
+                        });
+                      },
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Text(
+                      'Radius: ${_currentRadius.toStringAsFixed(0)} miles',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ],
+                ),
               ),
             ),
 
