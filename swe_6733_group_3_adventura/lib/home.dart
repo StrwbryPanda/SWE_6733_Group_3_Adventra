@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+enum Filter { Walking, Running, Cycling, Hiking, Swimming, Climbing, Skiing,
+  Snowboarding, Surfing, Skating}
+
 /// Flutter code sample for [NavigationBar].
 
 class HomePage extends StatelessWidget {
@@ -7,7 +10,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: ThemeData(useMaterial3: true), home: const NavigationExample());
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const NavigationExample(),
+    );
   }
 }
 
@@ -20,6 +26,7 @@ class NavigationExample extends StatefulWidget {
 
 class _NavigationExampleState extends State<NavigationExample> {
   int currentPageIndex = 1;
+  Set<Filter> filters = <Filter>{};
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +38,10 @@ class _NavigationExampleState extends State<NavigationExample> {
             currentPageIndex = index;
           });
         },
-        backgroundColor: const Color.fromARGB(255, 255, 123, 0),
+        backgroundColor: const Color.fromARGB(255, 255, 167, 85),
         indicatorColor: const Color.fromARGB(255, 255, 255, 255),
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          
           NavigationDestination(
             selectedIcon: Icon(Icons.home),
             icon: Icon(Icons.home_outlined),
@@ -65,13 +71,14 @@ class _NavigationExampleState extends State<NavigationExample> {
       ),
       body:
           <Widget>[
-
             /// Home page
             Card(
               shadowColor: Colors.transparent,
               margin: const EdgeInsets.all(8.0),
               child: SizedBox.expand(
-                child: Center(child: Text('Home page', style: theme.textTheme.titleLarge)),
+                child: Center(
+                  child: Text('Home page', style: theme.textTheme.titleLarge),
+                ),
               ),
             ),
 
@@ -79,8 +86,30 @@ class _NavigationExampleState extends State<NavigationExample> {
             Card(
               shadowColor: Colors.transparent,
               margin: const EdgeInsets.all(8.0),
-              child: SizedBox.expand(
-                child: Center(child: Text('Filter page', style: theme.textTheme.titleLarge)),
+              child: Column(
+                children: <Widget>[
+                  Text('Choose an exercise'),
+                  const SizedBox(height: 5.0),
+                  Wrap(
+                    children:
+                        Filter.values.map((Filter exercise) {
+                          return FilterChip(
+                            label: Text(exercise.name),
+                            selected: filters.contains(exercise),
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  filters.add(exercise);
+                                } else {
+                                  filters.remove(exercise);
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                  ),
+                  const SizedBox(height: 10.0),
+                ],
               ),
             ),
 
@@ -133,7 +162,12 @@ class _NavigationExampleState extends State<NavigationExample> {
               shadowColor: Colors.transparent,
               margin: const EdgeInsets.all(8.0),
               child: SizedBox.expand(
-                child: Center(child: Text('Settings page', style: theme.textTheme.titleLarge)),
+                child: Center(
+                  child: Text(
+                    'Settings page',
+                    style: theme.textTheme.titleLarge,
+                  ),
+                ),
               ),
             ),
 
@@ -141,7 +175,12 @@ class _NavigationExampleState extends State<NavigationExample> {
               shadowColor: Colors.transparent,
               margin: const EdgeInsets.all(8.0),
               child: SizedBox.expand(
-                child: Center(child: Text('Profile page', style: theme.textTheme.titleLarge)),
+                child: Center(
+                  child: Text(
+                    'Profile page',
+                    style: theme.textTheme.titleLarge,
+                  ),
+                ),
               ),
             ),
           ][currentPageIndex],

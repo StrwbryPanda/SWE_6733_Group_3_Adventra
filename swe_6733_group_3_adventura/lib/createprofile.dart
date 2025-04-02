@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'createprofile.dart';
-
-class CreateAccountPage extends StatefulWidget {
-  const CreateAccountPage({super.key});
+class CreateProfilePage extends StatefulWidget {
+  const CreateProfilePage({super.key});
 
   @override
-  _CreateAccountPageState createState() => _CreateAccountPageState();
+  _CreateProfilePageState createState() => _CreateProfilePageState();
 }
 
-class _CreateAccountPageState extends State<CreateAccountPage> {
+class _CreateProfilePageState extends State<CreateProfilePage> {
   final db = FirebaseFirestore.instance;
 
   final _firstNameController = TextEditingController();
@@ -29,8 +27,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   );
 
   void _updateFormValidation() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -60,7 +57,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-        title: Text('Create Account'),
+        title: Text('Create Profile'),
         centerTitle: true,
       ),
       body: Container(
@@ -171,7 +168,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a username';
                         }
-                        if (value == 'name') { // FIREBASE AUTH NEEDED
+                        if (value == 'name') {
+                          // FIREBASE AUTH NEEDED
                           return 'Username already in use';
                         }
                         return null;
@@ -203,8 +201,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ),
                       ),
                       onChanged: (value) {
-                        setState(() {
-                        });
+                        setState(() {});
                         _updateFormValidation();
                       },
                       validator: (value) {
@@ -259,9 +256,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             !RegExp(
                               r'[!@#$%^&*(),.?":{}|<>]',
                             ).hasMatch(value)) {
-                            return 'Password must contain at least one uppercase letter, one number, and one special character';
-                            }
-                            return null;
+                          return 'Password must contain at least one uppercase letter, one number, and one special character';
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -308,23 +305,27 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print('Sign up with email: ${_emailController.text}');
-
+                    // if (_formKey.currentState!.validate()) {
+                    //   print('Sign up with email: ${_emailController.text}');
+                    // }
+                    if (_firstNameController.text.isNotEmpty &&
+                        _lastNameController.text.isNotEmpty &&
+                        _usernameController.text.isNotEmpty &&
+                        _emailController.text.isNotEmpty &&
+                        _passwordController.text.isNotEmpty) {
                       db.collection('users').add({
-                          "email" : _emailController.text,
-                          "firstname" : _firstNameController.text,
-                          "lastname" : _lastNameController.text,
-                          "password" : _passwordController.text,
-                          "username" : _usernameController.text
-                        });
-
-                        Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateProfilePage(),
-                      ),
-                    );
+                        "email": _emailController.text,
+                        "firstname": _firstNameController.text,
+                        "lastname": _lastNameController.text,
+                        "password": _passwordController.text,
+                        "username": _usernameController.text,
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateProfilePage(),
+                        ),
+                      );
                     }
                   },
                   child: Text('Sign Up'),

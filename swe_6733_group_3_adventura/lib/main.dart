@@ -3,6 +3,7 @@ import 'package:swe_6733_group_3_adventura/home.dart';
 import 'createaccount.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'createprofile.dart';
 
 Future<void> main() async {
   await Firebase.initializeApp(
@@ -193,6 +194,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Jump to Home >'),
+                ),
+              ),
+              SizedBox(height: 20),
+              Align(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateProfilePage(),
+                      ),
+                    );
+                  },
+                  child: Text('Jump to Create Profile >'),
                 ),
               ),
             ],
