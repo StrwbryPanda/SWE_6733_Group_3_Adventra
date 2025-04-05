@@ -1,0 +1,5 @@
+Story Point Forecast
+First Sprint: 4/2/25 - 3/13/25
+Projected Points: 25
+
+Our team will complete 25 points worth of work during Sprint 2. Based on how much work we were able to get done in the first sprint (25 points) we think that 25 points for this sprint would be a fair prediction. Even though we are ramping up our development, we do not want to increase the scope of our sprint due to our team's lower experience with the current tech stack. We want to be able to confidently complete our chosen issues within the sprint timeframe.
