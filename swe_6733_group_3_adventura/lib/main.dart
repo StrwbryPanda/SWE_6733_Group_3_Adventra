@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swe_6733_group_3_adventura/home.dart';
 import 'createaccount.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'createprofile.dart';
 
@@ -152,17 +153,34 @@ class _MyHomePageState extends State<MyHomePage> {
               FractionallySizedBox(
                 widthFactor: 0.3,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (_username != 'name' || _password != '123') { // FIREBASE AUTH REQUIRED
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Invalid username or password')),
-                        );
-                        _formKey.currentState!.validate();
-                      } else {
-                        print('Success');
-                      }
+                  onPressed: () async {
+                    if(_formKey.currentState!.validate()){
+                          //Query the firestore with username and password
+                          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+                          .collection('users')
+                          .where('username', isEqualTo: _username)
+                          .where('password', isEqualTo: _password)
+                          .get();
+
+                          if(querySnapshot.docs.isNotEmpty){
+                            //Login if found
+                            Navigator.push(context, MaterialPageRoute(builder :(context) => HomePage(),));
+                          }
+                          else{
+                            //Show error message if not found
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid username or password')));
+                          }
                     }
+                    // if (_formKey.currentState!.validate()) {
+                    //   if (_username != 'name' || _password != '123') { // FIREBASE AUTH REQUIRED
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(content: Text('Invalid username or password')),
+                    //     );
+                    //     _formKey.currentState!.validate();
+                    //   } else {
+                    //     print('Success');
+                    //   }
+                    // }
                   },
                   child: Text('Sign in'),
                 ),
