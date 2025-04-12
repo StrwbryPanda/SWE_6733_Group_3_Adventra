@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swe_6733_group_3_adventura/home.dart';
+import 'package:swe_6733_group_3_adventura/main.dart';
 
 import 'createprofile.dart';
 
@@ -325,7 +327,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateProfilePage(),
+                        builder: (context) => MyHomePage(title: 'Adventra',),
                       ),
                     );
                     }
