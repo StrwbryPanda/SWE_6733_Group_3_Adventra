@@ -163,24 +163,23 @@ class _MyHomePageState extends State<MyHomePage> {
                           .get();
 
                           if(querySnapshot.docs.isNotEmpty){
-                            //Login if found
-                            Navigator.push(context, MaterialPageRoute(builder :(context) => HomePage(),));
+                            //Login if found and store user info
+                            DocumentSnapshot userInfo = querySnapshot.docs.first;
+                            Map<String,dynamic> userData = userInfo.data() as Map<String,dynamic>;
+
+                            //Pass stored user info to HomePage
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(
+                                builder :(context) => HomePage(userData :userData),
+                                )
+                                );
                           }
                           else{
                             //Show error message if not found
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid username or password')));
                           }
                     }
-                    // if (_formKey.currentState!.validate()) {
-                    //   if (_username != 'name' || _password != '123') { // FIREBASE AUTH REQUIRED
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(content: Text('Invalid username or password')),
-                    //     );
-                    //     _formKey.currentState!.validate();
-                    //   } else {
-                    //     print('Success');
-                    //   }
-                    // }
                   },
                   child: Text('Sign in'),
                 ),

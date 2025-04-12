@@ -14,19 +14,25 @@ enum Filter {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  //Call for userData
+  final Map<String, dynamic>? userData;
+
+  const HomePage({super.key, this.userData});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: const NavigationExample(),
+      home: NavigationExample(userData: userData,),
     );
   }
 }
 
 class NavigationExample extends StatefulWidget {
-  const NavigationExample({super.key});
+  //Call for userData
+  final Map<String, dynamic>? userData;
+
+  const NavigationExample({super.key, this.userData});
 
   @override
   State<NavigationExample> createState() => _NavigationExampleState();
@@ -194,7 +200,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      'Hi!',
+                      'Hi, ${widget.userData?['email']}!',
                       style: theme.textTheme.bodyLarge!.copyWith(
                         color: theme.colorScheme.onPrimary,
                       ),
