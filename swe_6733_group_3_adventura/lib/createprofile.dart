@@ -23,9 +23,11 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   bool _isMalePreferenceSelected = false;
   bool _isFemalePreferenceSelected = false;
+  bool _isOtherPreferenceSelected = false;
 
   bool _isMale = false;
   bool _isFemale = false;
+  bool _isOther = false;
 
   String? _passwordError;
   String? _password;
@@ -137,6 +139,25 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                           , width: 3),
                       ),
                       child: const Icon(Icons.female),
+                    ),
+                    const SizedBox(width: 40.0),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isFemale = !_isFemale;
+                          if (_isMale) {_isMale = false;}
+                        });
+                      },
+                      foregroundColor:
+                          _isFemale ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isFemale ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isFemale ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.transgender),
                     ),
                   ],
                 ),
