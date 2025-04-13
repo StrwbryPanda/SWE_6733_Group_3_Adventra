@@ -95,7 +95,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'How do you identify?',
+                    'How do you identify? (This is temporary, a drop down will be added instead)',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -207,6 +207,24 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                           , width: 3),
                       ),
                       child: const Icon(Icons.female),
+                    ),
+                    const SizedBox(width: 40.0),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isFemalePreferenceSelected = !_isFemalePreferenceSelected;
+                        });
+                      },
+                      foregroundColor:
+                          _isFemalePreferenceSelected ? Colors.white : const Color.fromARGB(255, 212, 212, 212),
+                      backgroundColor:
+                          _isFemalePreferenceSelected ? Colors.orange : Colors.white,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: _isFemalePreferenceSelected ? const Color.fromARGB(255, 255, 102, 0) : const Color.fromARGB(255, 212, 212, 212)
+                          , width: 3),
+                      ),
+                      child: const Icon(Icons.transgender),
                     ),
                   ],
                 ),
