@@ -21,5 +21,5 @@
 
 ## Project Demo
 **Demo Link:** Coming Sprint 3  
-**Video:** https://youtu.be/Zav8HB0XpJI
+**Video:** https://youtu.be/Zav8HB0XpJI  
 We had some unexpected issues pop up when trying to host, so here is a recorded demo of our incremented product. This will be the first thing we resolve for Sprint 3 (part 4). 
