@@ -256,11 +256,21 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   },
                   child: Text('Sign Up'),
                 ),
-              ],
-            ),
+            
+              ElevatedButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();  
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),  // is this the name of the page? I have no idea
+                  );
+                },
+                child: Text('Logout'),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
