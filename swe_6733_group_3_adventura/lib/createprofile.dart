@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:swe_6733_group_3_adventura/main.dart';
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -262,7 +264,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   await FirebaseAuth.instance.signOut();  
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),  // is this the name of the page? I have no idea
+                    MaterialPageRoute(builder: (context) => MyHomePage(title: 'Adventra')),  // is this the name of the page? I have no idea
                   );
                 },
                 child: Text('Logout'),
@@ -273,4 +275,5 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       ),
     ),
   );
+}
 }

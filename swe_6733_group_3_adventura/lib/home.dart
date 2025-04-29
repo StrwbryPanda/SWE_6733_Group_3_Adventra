@@ -77,8 +77,8 @@ class _NavigationExampleState extends State<NavigationExample> {
         Scaffold(
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-            title: const Text(
-              'Person\'s Name',
+            title: Text(
+              '${widget.userData?['firstname']} ${widget.userData?['lastname']} ',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             centerTitle: true,
@@ -129,8 +129,8 @@ class _NavigationExampleState extends State<NavigationExample> {
         Scaffold(
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-            title: const Text(
-              'Messages / Person\' Name',
+            title: Text(
+              'Messages / ${widget.userData?['firstname']}',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             centerTitle: true,
