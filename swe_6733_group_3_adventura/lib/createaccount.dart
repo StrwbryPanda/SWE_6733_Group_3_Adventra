@@ -31,8 +31,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   );
 
   void _updateFormValidation() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -176,7 +175,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a username';
                         }
-                        if (value == 'name') { // FIREBASE AUTH NEEDED
+                        if (value == 'JS') {
+                          // FIREBASE AUTH NEEDED
                           return 'Username already in use';
                         }
                         return null;
@@ -208,8 +208,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ),
                       ),
                       onChanged: (value) {
-                        setState(() {
-                        });
+                        setState(() {});
                         _updateFormValidation();
                       },
                       validator: (value) {
@@ -264,9 +263,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             !RegExp(
                               r'[!@#$%^&*(),.?":{}|<>]',
                             ).hasMatch(value)) {
-                            return 'Password must contain at least one uppercase letter, one number, and one special character';
-                            }
-                            return null;
+                          return 'Password must contain at least one uppercase letter, one number, and one special character';
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -316,23 +315,33 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     if (_formKey.currentState!.validate()) {
                       print('Sign up with email: ${_emailController.text}');
 
-                      db.collection('users').add({
-                          "email" : _emailController.text,
-                          "firstname" : _firstNameController.text,
-                          "lastname" : _lastNameController.text,
-                          "password" : _passwordController.text,
-                          "username" : _usernameController.text
-                        });
-
-                        Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyHomePage(title: 'Adventra',),
-                      ),
-                    );
+                      db
+                          .collection('users')
+                          .add({
+                            "email": _emailController.text,
+                            "firstname": _firstNameController.text,
+                            "lastname": _lastNameController.text,
+                            "password": _passwordController.text,
+                            "username": _usernameController.text,
+                          })
+                          .then((_) {
+                            // After successfully adding the user, navigate to CreateProfilePage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CreateProfilePage(),
+                              ),
+                            ).then((value) {
+                              // This 'then' block runs when Navigator.pop() is called from CreateProfilePage
+                              if (value == true) {
+                                // Now, pop the CreateAccountPage itself, passing 'true' to the previous page
+                                Navigator.pop(context, true);
+                              }
+                            });
+                          });
                     }
                   },
-                  child: Text('Sign Up'),
+                  child: const Text('Sign Up'),
                 ),
               ],
             ),

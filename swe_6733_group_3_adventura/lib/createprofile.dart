@@ -174,12 +174,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                      );
+                    Navigator.pop(context, true);
                     // if (_firstNameController.text.isNotEmpty &&
                     //     _lastNameController.text.isNotEmpty &&
                     //     _usernameController.text.isNotEmpty &&

@@ -7,10 +7,8 @@ import 'firebase_options.dart';
 import 'createprofile.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const App());
 }
 
@@ -61,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        child: Form( // Wrap Column with Form
+        child: Form(
+          // Wrap Column with Form
           key: _formKey,
           child: Column(
             children: <Widget>[
@@ -154,31 +153,36 @@ class _MyHomePageState extends State<MyHomePage> {
                 widthFactor: 0.3,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if(_formKey.currentState!.validate()){
-                          //Query the firestore with username and password
-                          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-                          .collection('users')
-                          .where('username', isEqualTo: _username)
-                          .where('password', isEqualTo: _password)
-                          .get();
+                    if (_formKey.currentState!.validate()) {
+                      //Query the firestore with username and password
+                      QuerySnapshot querySnapshot =
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .where('username', isEqualTo: _username)
+                              .where('password', isEqualTo: _password)
+                              .get();
 
-                          if(querySnapshot.docs.isNotEmpty){
-                            //Login if found and store user info
-                            DocumentSnapshot userInfo = querySnapshot.docs.first;
-                            Map<String,dynamic> userData = userInfo.data() as Map<String,dynamic>;
+                      if (querySnapshot.docs.isNotEmpty) {
+                        //Login if found and store user info
+                        DocumentSnapshot userInfo = querySnapshot.docs.first;
+                        Map<String, dynamic> userData =
+                            userInfo.data() as Map<String, dynamic>;
 
-                            //Pass stored user info to HomePage
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute(
-                                builder :(context) => HomePage(userData :userData),
-                                )
-                                );
-                          }
-                          else{
-                            //Show error message if not found
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid username or password')));
-                          }
+                        //Pass stored user info to HomePage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(userData: userData),
+                          ),
+                        );
+                      } else {
+                        //Show error message if not found
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Invalid username or password'),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Text('Sign in'),
@@ -194,7 +198,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (context) => CreateAccountPage(),
                       ),
-                    );
+                    ).then((value) {
+                      if (value == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Account successfully created!'),
+                          ),
+                        );
+                      }
+                    });
                   },
                   child: Text('Create an Account'),
                 ),
@@ -205,9 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   },
                   child: Text('Jump to Home >'),
@@ -220,11 +230,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateProfilePage(),
-                      ),
-                    );
+                        builder: (context) => const CreateProfilePage(),
+                      ), // Assuming CreateProfilePage is the widget for createprofile.dart
+                    ).then((value) {
+                      // This block runs when Navigator.pop in CreateProfilePage is called
+                      if (value == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Account successfully created!'),
+                          ),
+                        );
+                      }
+                    });
                   },
-                  child: Text('Jump to Create Profile >'),
+                  child: const Text(
+                    'Go to Create Profile',
+                  ), // Example button text
                 ),
               ),
             ],
