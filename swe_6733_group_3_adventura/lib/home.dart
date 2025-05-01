@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swe_6733_group_3_adventura/main.dart';
+import 'dart:math';
 
 enum Filter {
   Walking,
@@ -14,6 +15,8 @@ enum Filter {
   Skating,
 }
 
+enum SwipeDirection { none, left, right }
+
 class HomePage extends StatelessWidget {
   final Map<String, dynamic>? userData;
 
@@ -23,28 +26,190 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: NavigationExample(userData: userData),
+      home: ProfileSwipePage(userData: userData),
     );
   }
 }
 
-class NavigationExample extends StatefulWidget {
+class ProfileSwipePage extends StatefulWidget {
   final Map<String, dynamic>? userData;
 
-  const NavigationExample({super.key, this.userData});
+  const ProfileSwipePage({super.key, this.userData});
 
   @override
-  State<NavigationExample> createState() => _NavigationExampleState();
+  State<ProfileSwipePage> createState() => _ProfileSwipePageState();
 }
 
-class _NavigationExampleState extends State<NavigationExample> {
+class _ProfileSwipePageState extends State<ProfileSwipePage>
+    with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
   Set<Filter> filters = <Filter>{};
   double _currentRadius = 20.0;
+  int _currentProfileIndex = 0;
+  bool _isSwiping = false; // Track if a swipe animation is in progress
+
+  late AnimationController _swipeController;
+  late Animation<Offset> _swipeAnimation;
+  Offset _dragStartOffset = Offset.zero;
+  Offset _dragCurrentOffset = Offset.zero;
+  bool _isDragging = false;
+  double _dragStartX = 0.0;
+
+  final List<Map<String, dynamic>> _profiles = [
+    {
+      'photoUrl':
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      'bio': 'Avid hiker and nature lover.',
+      'preferences': ['Hiking', 'Walking'],
+      'distance': '2.5 miles away',
+    },
+    {
+      'photoUrl':
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      'bio': 'Enjoys cycling and exploring new cities.',
+      'preferences': ['Cycling', 'Running'],
+      'distance': '5.1 miles away',
+    },
+    {
+      'photoUrl':
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      'bio': 'Passionate about swimming and water sports.',
+      'preferences': ['Swimming', 'Surfing'],
+      'distance': '1.8 miles away',
+    },
+    {
+      'photoUrl':
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      'bio': 'Loves climbing mountains and challenging themselves.',
+      'preferences': ['Climbing', 'Hiking'],
+      'distance': '3.7 miles away',
+    },
+    {
+      'photoUrl':
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+      'bio': 'Enthusiastic about skiing and winter adventures.',
+      'preferences': ['Skiing', 'Snowboarding'],
+      'distance': '7.2 miles away',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _swipeController = AnimationController(
+      duration: const Duration(milliseconds: 200), // Shorter duration for faster swipe
+      vsync: this,
+    );
+    _swipeController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _dragCurrentOffset = Offset.zero;
+          _isSwiping = false; // Swipe animation completed, allow new drags
+          if (_swipeDirection != SwipeDirection.none) {
+            if (_swipeDirection == SwipeDirection.left) {
+              _nextProfile();
+            } else if (_swipeDirection == SwipeDirection.right) {
+              _previousProfile();
+            }
+            _swipeDirection = SwipeDirection.none;
+          }
+        });
+      }
+    });
+    _swipeAnimation = Tween<Offset>(begin: Offset.zero, end: Offset.zero)
+        .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _swipeController.dispose();
+    super.dispose();
+  }
+
+  void _startDrag(DragStartDetails details) {
+    if (_isSwiping) return; // Prevent dragging during swipe animation
+    setState(() {
+      _isDragging = true;
+      _dragStartOffset = details.localPosition;
+      _dragCurrentOffset = Offset.zero;
+      _dragStartX = details.globalPosition.dx;
+      if (_swipeController.isAnimating) {
+        _swipeController.stop();
+      }
+    });
+  }
+
+  void _updateDrag(DragUpdateDetails details) {
+    if (_isSwiping) return; // Prevent updating drag during swipe animation
+    setState(() {
+      _dragCurrentOffset = details.localPosition - _dragStartOffset;
+    });
+  }
+
+  SwipeDirection _swipeDirection = SwipeDirection.none;
+
+  void _endDrag(DragEndDetails details) {
+    if (_isSwiping) return; // Prevent ending drag during swipe animation
+    setState(() {
+      _isDragging = false;
+      final screenWidth = MediaQuery.of(context).size.width;
+      final currentX = _dragStartX + _dragCurrentOffset.dx;
+
+      if (currentX < screenWidth / 3) {
+        // Swiped to the left third
+        _animateSwipe(Offset(-screenWidth * 1.5, 0)); // Fly off left
+        _swipeDirection = SwipeDirection.left;
+      } else if (currentX > screenWidth * 2 / 3) {
+        // Swiped to the right third
+        _animateSwipe(Offset(screenWidth * 1.5, 0)); // Fly off right
+        _swipeDirection = SwipeDirection.right;
+      } else {
+        // Not swiped far enough, animate back
+        _animateBack();
+        _swipeDirection = SwipeDirection.none;
+      }
+    });
+  }
+
+  void _animateSwipe(Offset endOffset) {
+    setState(() {
+      _isSwiping = true; // Mark that a swipe animation is in progress
+      _swipeAnimation = Tween<Offset>(begin: _dragCurrentOffset, end: endOffset)
+          .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+      _swipeController.reset();
+      _swipeController.forward();
+    });
+  }
+
+  void _animateBack() {
+    _swipeAnimation = Tween<Offset>(begin: _dragCurrentOffset, end: Offset.zero)
+        .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+    _swipeController.reset();
+    _swipeController.forward();
+  }
+
+  void _nextProfile() {
+    setState(() {
+      if (_currentProfileIndex < _profiles.length - 1) {
+        _currentProfileIndex++;
+      }
+    });
+  }
+
+  void _previousProfile() {
+    setState(() {
+      if (_currentProfileIndex > 0) {
+        _currentProfileIndex--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -83,103 +248,182 @@ class _NavigationExampleState extends State<NavigationExample> {
             ),
             centerTitle: true,
           ),
-          body: Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return FilterBottomSheet(
-                        initialFilters: filters,
-                        initialRadius: _currentRadius,
-                        onFiltersChanged: (newFilters) {
-                          setState(() {
-                            filters = newFilters;
-                          });
-                        },
-                        onRadiusChanged: (newRadius) {
-                          setState(() {
-                            _currentRadius = newRadius;
-                          });
+          body: Stack(
+            children: [
+              if (_profiles.length > 1)
+                Positioned(
+                  top: screenHeight * 0.1,
+                  left: 20,
+                  right: 20,
+                  bottom: screenHeight * 0.2,
+                  child: Opacity(
+                    opacity: 0.8,
+                    child: Transform.scale(
+                      scale: 0.9,
+                      child: IgnorePointer( // Make the card behind non-interactive during swipe
+                        ignoring: _isSwiping,
+                        child: ProfileCard(
+                            profileData: _profiles[
+                                (_currentProfileIndex + 1) % _profiles.length]),
+                      ),
+                    ),
+                  ),
+                ),
+              if (_profiles.isNotEmpty)
+                AnimatedBuilder(
+                  animation: _swipeController,
+                  builder: (context, child) {
+                    final offset = _isDragging
+                        ? _dragCurrentOffset
+                        : _swipeAnimation?.value ?? Offset.zero;
+                    return Positioned(
+                      top: screenHeight * 0.08,
+                      left: 20 + offset.dx,
+                      right: 20 - offset.dx,
+                      bottom: screenHeight * 0.22,
+                      child: GestureDetector(
+                        onPanStart: _startDrag,
+                        onPanUpdate: _updateDrag,
+                        onPanEnd: _endDrag,
+                        child: ProfileCard(
+                            profileData: _profiles[_currentProfileIndex]),
+                      ),
+                    );
+                  },
+                ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterBottomSheet(
+                            initialFilters: filters,
+                            initialRadius: _currentRadius,
+                            onFiltersChanged: (newFilters) {
+                              setState(() {
+                                filters = newFilters;
+                              });
+                            },
+                            onRadiusChanged: (newRadius) {
+                              setState(() {
+                                _currentRadius = newRadius;
+                              });
+                            },
+                          );
                         },
                       );
                     },
-                  );
-                },
-                foregroundColor: Colors.white,
-                elevation: 20,
-                backgroundColor: Colors.orange,
-                shape: const CircleBorder(
-                  side: BorderSide(
-                    color: Color.fromARGB(255, 255, 102, 0),
-                    width: 3,
+                    foregroundColor: Colors.white,
+                    elevation: 20,
+                    backgroundColor: Colors.orange,
+                    shape: const CircleBorder(
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 255, 102, 0),
+                        width: 3,
+                      ),
+                    ),
+                    child: const Icon(Icons.filter_alt),
                   ),
                 ),
-                child: const Icon(Icons.filter_alt),
               ),
-            ),
+            ],
           ),
         ),
 
-        // Messages
-        
-        Scaffold(
+        //Messages
+
+       Scaffold(
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 255, 136, 0),
             title: Text(
               'Messages / ${widget.userData?['firstname']}',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             centerTitle: true,
           ),
           body: ListView.builder(
-          reverse: true,
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              return Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    'Hello',
-                    style: theme.textTheme.bodyLarge!.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                  ),
+            itemCount: 5, // Let's show a few example chats
+            itemBuilder: (BuildContext context, int index) {
+              // Example data for each chat item
+              final String name = 'User ${index + 1}';
+              const String lastMessage = 'Hey, how are you doing?';
+              const String avatarUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(avatarUrl),
                 ),
+                title: Text(
+                  name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(lastMessage),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  // Add navigation to the specific chat screen here
+                  print('Tapped on chat with $name');
+                },
               );
-            }
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(
-                  'Hi, ${widget.userData?['email']}!',
-                  style: theme.textTheme.bodyLarge!.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+            },
+          ),
         ),
 
-        // Profile Page
+        // Scaffold(
+        //   appBar: AppBar(
+        //     backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+        //     title: Text(
+        //       'Messages / ${widget.userData?['firstname']}',
+        //       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        //     ),
+        //     centerTitle: true,
+        //   ),
+        //   body: ListView.builder(
+        //     reverse: true,
+        //     itemCount: 2,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       if (index == 0) {
+        //         return Align(
+        //           alignment: Alignment.centerRight,
+        //           child: Container(
+        //             margin: const EdgeInsets.all(8.0),
+        //             padding: const EdgeInsets.all(8.0),
+        //             decoration: BoxDecoration(
+        //               color: theme.colorScheme.primary,
+        //               borderRadius: BorderRadius.circular(8.0),
+        //             ),
+        //             child: Text(
+        //               'Hello',
+        //               style: theme.textTheme.bodyLarge!.copyWith(
+        //                 color: theme.colorScheme.onPrimary,
+        //               ),
+        //             ),
+        //           ),
+        //         );
+        //       }
+        //       return Align(
+        //         alignment: Alignment.centerLeft,
+        //         child: Container(
+        //           margin: const EdgeInsets.all(8.0),
+        //           padding: const EdgeInsets.all(8.0),
+        //           decoration: BoxDecoration(
+        //             color: theme.colorScheme.primary,
+        //             borderRadius: BorderRadius.circular(8.0),
+        //           ),
+        //           child: Text(
+        //             'Hi, ${widget.userData?['email']}!',
+        //             style: theme.textTheme.bodyLarge!.copyWith(
+        //               color: theme.colorScheme.onPrimary,
+        //             ),
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
 
         Scaffold(
           appBar: AppBar(
@@ -190,32 +434,99 @@ class _NavigationExampleState extends State<NavigationExample> {
             ),
             centerTitle: true,
           ),
-          body: Container(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Save Changes'),
-                  ),
-                  const SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const App()),
-                      );
-                    },
-                    child: const Text('Sign Out'),
-                  ),
-                  const SizedBox(height: 20.0),
-                ],
-              ),
+          body: Center(
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Save Changes'),
+                ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const App()),
+                    );
+                  },
+                  child: const Text('Sign Out'),
+                ),
+                const SizedBox(height: 20.0),
+              ],
             ),
           ),
         ),
       ][currentPageIndex],
+    );
+  }
+}
+
+class ProfileCard extends StatelessWidget {
+  final Map<String, dynamic> profileData;
+
+  const ProfileCard({super.key, required this.profileData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      margin: EdgeInsets.zero, // Remove default margin
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+              child: SizedBox(
+                width: 100.0,
+                height: 100.0,
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(profileData['photoUrl']),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Biography',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            Text(profileData['bio'] ?? 'No bio available.'),
+            const SizedBox(height: 16.0),
+            Text(
+              'Preferences',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            Wrap(
+              spacing: 8.0,
+              children: (profileData['preferences'] as List<String>?)
+                      ?.map((preference) {
+                    return Chip(label: Text(preference));
+                  }).toList() ??
+                  [const Text('No preferences listed.')],
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Distance',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            Text(profileData['distance'] ?? 'Distance not available.'),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -236,6 +547,20 @@ class FilterBottomSheet extends StatefulWidget {
 
   @override
   State<FilterBottomSheet> createState() => _FilterBottomSheetState();
+}
+
+class ChatMessage {
+  final String id;
+  final String name;
+  final String lastMessage;
+  final String avatarUrl;
+
+  ChatMessage({
+    required this.id,
+    required this.name,
+    required this.lastMessage,
+    required this.avatarUrl,
+  });
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
