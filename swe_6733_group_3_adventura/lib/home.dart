@@ -72,7 +72,7 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
     {
       'name': 'Jessica',
       'photoUrl':
-          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAPYGh3YJF0JXj3M9pXXZlodRE73nh6GNpEg&s',
       'bio':
           'My favorite thing in the world is to climb the most difficult mountain climbs in the world. If you like a challenge, I\'m the one to join!',
       'preferences': ['Hiking', 'Walking', 'Climbing'],
@@ -90,7 +90,7 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
     {
       'name': 'Sophia',
       'photoUrl':
-          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          'https://img.redbull.com/images/c_crop,x_1221,y_1,h_3386,w_2709/c_fill,w_400,h_500/q_auto:low,f_auto/redbullcom/2023/9/6/jpyoaaytb5d6la9lyid1/caroline-marks-teahupoo-tube',
       'bio':
           'I\'ve been surfing for years, if you want to know the best beaches, I know the absolute best!',
       'preferences': ['Swimming', 'Surfing'],
@@ -376,49 +376,54 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
             ),
 
             //Messages
-Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-        title: const Text(
-          'Messages',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemCount: 3, // Let's show a few example chats
-        itemBuilder: (BuildContext context, int index) {
-          // Example data for each chat item
-          final String name = ['Amanda', 'John', 'Sarah'][index];
-          const String lastMessage = 'Hey, how are you doing?';
-          const String avatarUrl =
-              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(avatarUrl),
-            ),
-            title: Text(
-              name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: const Text(lastMessage),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(name: name),
+            Scaffold(
+              appBar: AppBar(
+                backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+                title: const Text(
+                  'Messages',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-              );
-            },
-          );
-        },
-      ),
-    ),
+                centerTitle: true,
+              ),
+              body: ListView.builder(
+                itemCount: 3, // Let's show a few example chats
+                itemBuilder: (BuildContext context, int index) {
+                  // Example data for each chat item
+                  final String name = ['Amanda', 'Cadence', 'Sarah'][index];
+                  String lastMessage =
+                      [
+                        'Hey, how are you doing?',
+                        'You wanna try and do that hike again?',
+                        'we\'re ready when you are',
+                      ][index];
+                  String avatarUrl =
+                      [
+                        'https://www.muchbetteradventures.com/magazine/content/images/2020/02/21155648/Sarah-R-profile-1.jpeg',
+                        'https://d3owbckoeihl9o.cloudfront.net/images/10adv/wp-content/uploads/2021/03/Blog-Hiker-personalities-05-Hikers-taking-photos-on-cliff-edge.jpg',
+                        'https://dkoko.com/cdn/shop/articles/delilah_hutchings_longboarding_nosara_costa_rica.jpg?v=1656410103&width=1200',
+                      ][index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(avatarUrl),
+                    ),
+                    title: Text(
+                      name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(lastMessage),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatScreen(name: name),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
 
             Scaffold(
               appBar: AppBar(
@@ -432,138 +437,140 @@ Scaffold(
               body: Center(
                 child: Form(
                   key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Change Profile Page:',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Change Profile Page:',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          labelText: 'Select identification',
-                          border: OutlineInputBorder(),
-                        ),
-                        value: _selectedIdentification,
-                        items:
-                            <String>[
-                              'Male',
-                              'Female',
-                              'Non-Binary',
-                              'Other',
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedIdentification = newValue;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      const SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          labelText: 'Select your preferences',
-                          border: OutlineInputBorder(),
-                        ),
-                        value: null,
-                        items:
-                            <String>[
-                              'Male',
-                              'Female',
-                              'Non-Binary',
-                              'Other',
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            if (newValue != null) {
-                              if (_selectedPreferences.contains(newValue)) {
-                                _selectedPreferences.remove(newValue);
-                              } else {
-                                _selectedPreferences.add(newValue);
-                              }
-                            }
-                          });
-                        },
-                        selectedItemBuilder: (BuildContext context) {
-                          return <String>[
-                            'Male',
-                            'Female',
-                            'Non-Binary',
-                            'Other',
-                          ].map((String value) {
-                            return Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                _selectedPreferences.join(', '),
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            );
-                          }).toList();
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        controller: _bioController,
-                        maxLines: 3,
-                        decoration: const InputDecoration(
-                          labelText: 'Bio',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        controller: _locationController,
-                        decoration: const InputDecoration(
-                          labelText: 'Current Location (e.g., City, State)',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Align(
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Save Changes'),
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Align(
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const App(),
-                              ),
-                            );
+                        const SizedBox(height: 20),
+                        DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'Select identification',
+                            border: OutlineInputBorder(),
+                          ),
+                          value: _selectedIdentification,
+                          items:
+                              <String>[
+                                'Male',
+                                'Female',
+                                'Non-Binary',
+                                'Other',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedIdentification = newValue;
+                            });
                           },
-                          child: const Text('Sign Out'),
                         ),
-                      ),
-
-                      const SizedBox(height: 20.0),
-                    ],
+                        const SizedBox(height: 20),
+                        const SizedBox(height: 20),
+                        DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'Select your preferences',
+                            border: OutlineInputBorder(),
+                          ),
+                          value: null,
+                          items:
+                              <String>[
+                                'Male',
+                                'Female',
+                                'Non-Binary',
+                                'Other',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              if (newValue != null) {
+                                if (_selectedPreferences.contains(newValue)) {
+                                  _selectedPreferences.remove(newValue);
+                                } else {
+                                  _selectedPreferences.add(newValue);
+                                }
+                              }
+                            });
+                          },
+                          selectedItemBuilder: (BuildContext context) {
+                            return <String>[
+                              'Male',
+                              'Female',
+                              'Non-Binary',
+                              'Other',
+                            ].map((String value) {
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  _selectedPreferences.join(', '),
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              );
+                            }).toList();
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: _bioController,
+                          maxLines: 3,
+                          decoration: const InputDecoration(
+                            labelText: 'Bio',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: _locationController,
+                          decoration: const InputDecoration(
+                            labelText: 'Current Location (e.g., City, State)',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        Align(
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Save Changes'),
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        Align(
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const App(),
+                                ),
+                              );
+                            },
+                            child: const Text('Sign Out'),
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -680,10 +687,7 @@ class ChatScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 255, 136, 0),
         title: Text(
           name,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
       body: const Center(

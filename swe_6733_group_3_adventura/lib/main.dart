@@ -211,43 +211,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Create an Account'),
                 ),
               ),
-              SizedBox(height: 20),
-              Align(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
-                  },
-                  child: Text('Jump to Home >'),
-                ),
-              ),
-              SizedBox(height: 20),
-              Align(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CreateProfilePage(),
-                      ), // Assuming CreateProfilePage is the widget for createprofile.dart
-                    ).then((value) {
-                      // This block runs when Navigator.pop in CreateProfilePage is called
-                      if (value == true) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Account successfully created!'),
-                          ),
-                        );
-                      }
-                    });
-                  },
-                  child: const Text(
-                    'Go to Create Profile',
-                  ), // Example button text
-                ),
-              ),
             ],
           ),
         ),

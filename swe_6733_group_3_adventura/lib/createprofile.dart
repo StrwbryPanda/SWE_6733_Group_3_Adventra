@@ -95,6 +95,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         centerTitle: true,
       ),
       body: Container(
+        width: double.infinity, // Added to take full width
+        height: double.infinity, // Added to take full height
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -109,195 +111,193 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Give us some info about yourself',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Give us some info about yourself',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Select identification',
-                    border: OutlineInputBorder(),
-                  ),
-                  value: _selectedIdentification,
-                  items:
-                      <String>['Male', 'Female', 'Non-Binary', 'Other'].map((
-                        String value,
-                      ) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedIdentification = newValue;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
-                const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: 'Select your preferences',
-                    border: OutlineInputBorder(),
-                  ),
-                  value: null,
-                  items:
-                      <String>['Male', 'Female', 'Non-Binary', 'Other'].map((
-                        String value,
-                      ) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      if (newValue != null) {
-                        if (_selectedPreferences.contains(newValue)) {
-                          _selectedPreferences.remove(newValue);
-                        } else {
-                          _selectedPreferences.add(newValue);
-                        }
-                      }
-                    });
-                  },
-                  selectedItemBuilder: (BuildContext context) {
-                    return <String>[
-                      'Male',
-                      'Female',
-                      'Non-Binary',
-                      'Other',
-                    ].map((String value) {
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          _selectedPreferences.join(', '),
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: 'Select identification',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: _selectedIdentification,
+                    items: <String>['Male', 'Female', 'Non-Binary', 'Other']
+                        .map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
                       );
-                    }).toList();
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _bioController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Bio',
-                    border: OutlineInputBorder(),
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedIdentification = newValue;
+                      });
+                    },
                   ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _locationController,
-                  decoration: const InputDecoration(
-                    labelText: 'Current Location (e.g., City, State)',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Activities',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                Wrap(
-                  spacing: 8.0,
-                  children:
-                      Filter.values.map((Filter activity) {
-                        return FilterChip(
-                          padding: const EdgeInsets.all(8.0),
-                          selectedColor: const Color.fromARGB(255, 255, 115, 0),
-                          label: Text(activity.name),
-                          selected: filters.contains(activity),
-                          onSelected: (bool selected) {
-                            setState(() {
-                              if (selected) {
-                                filters.add(activity);
-                              } else {
-                                filters.remove(activity);
-                              }
-                            });
-                          },
-                        );
-                      }).toList(),
-                ),
-                const SizedBox(height: 20.0),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Search Radius',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                Slider(
-                  value: _currentRadius,
-                  activeColor: const Color.fromARGB(255, 255, 115, 0),
-                  max: 200,
-                  onChanged: (double value) {
-                    setState(() {
-                      _currentRadius = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10.0),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Radius: ${_currentRadius.toStringAsFixed(0)} miles',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, true);
-
-                      if (_firstNameController.text.isNotEmpty &&
-                          _lastNameController.text.isNotEmpty &&
-                          _usernameController.text.isNotEmpty &&
-                          _emailController.text.isNotEmpty &&
-                          _passwordController.text.isNotEmpty &&
-                          _selectedIdentification != null) {
-                        db.collection('users').add({
-                          "email": _emailController.text,
-                          "firstname": _firstNameController.text,
-                          "lastname": _lastNameController.text,
-                          "password": _passwordController.text,
-                          "username": _usernameController.text,
-                        });
-
-                        Navigator.push(
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (context) => CreateProfilePage(),
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: 'Select your preferences',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: null,
+                    items: <String>['Male', 'Female', 'Non-Binary', 'Other']
+                        .map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        if (newValue != null) {
+                          if (_selectedPreferences.contains(newValue)) {
+                            _selectedPreferences.remove(newValue);
+                          } else {
+                            _selectedPreferences.add(newValue);
+                          }
+                        }
+                      });
+                    },
+                    selectedItemBuilder: (BuildContext context) {
+                      return <String>['Male', 'Female', 'Non-Binary', 'Other']
+                          .map((String value) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            _selectedPreferences.join(', '),
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         );
-                      }
+                      }).toList();
                     },
-                    child: Text('Sign Up'),
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _bioController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Bio',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _locationController,
+                    decoration: const InputDecoration(
+                      labelText: 'Current Location (e.g., City, State)',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Activities',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Wrap(
+                    spacing: 8.0,
+                    children: Filter.values.map((Filter activity) {
+                      return FilterChip(
+                        padding: const EdgeInsets.all(8.0),
+                        selectedColor:
+                            const Color.fromARGB(255, 255, 115, 0),
+                        label: Text(activity.name),
+                        selected: filters.contains(activity),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            if (selected) {
+                              filters.add(activity);
+                            } else {
+                              filters.remove(activity);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20.0),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Search Radius',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Slider(
+                    value: _currentRadius,
+                    activeColor: const Color.fromARGB(255, 255, 115, 0),
+                    max: 200,
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentRadius = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Radius: ${_currentRadius.toStringAsFixed(0)} miles',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Align(
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+
+                        if (_firstNameController.text.isNotEmpty &&
+                            _lastNameController.text.isNotEmpty &&
+                            _usernameController.text.isNotEmpty &&
+                            _emailController.text.isNotEmpty &&
+                            _passwordController.text.isNotEmpty &&
+                            _selectedIdentification != null) {
+                          db.collection('users').add({
+                            "email": _emailController.text,
+                            "firstname": _firstNameController.text,
+                            "lastname": _lastNameController.text,
+                            "password": _passwordController.text,
+                            "username": _usernameController.text,
+                          });
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CreateProfilePage(),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Sign Up'),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),
