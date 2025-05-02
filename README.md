@@ -20,6 +20,4 @@
 **Prioritized Backlog/TaskLog:** https://github.com/users/StrwbryPanda/projects/3/views/3
 
 ## Project Demo
-**Demo Link:** Coming Sprint 3  
-**Video:** https://youtu.be/Zav8HB0XpJI  
-We had some unexpected issues pop up when trying to host, so here is a recorded demo of our incremented product. This will be the first thing we resolve for Sprint 3 (part 4). 
+**Demo Link:** https://adventra-490ff.web.app/
