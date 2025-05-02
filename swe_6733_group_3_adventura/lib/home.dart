@@ -55,29 +55,49 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
   bool _isDragging = false;
   double _dragStartX = 0.0;
 
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _bioController = TextEditingController();
+  final _locationController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  String? _selectedIdentification;
+  List<String> _selectedPreferences = [];
+
   final List<Map<String, dynamic>> _profiles = [
     {
+      'name': 'Jessica',
       'photoUrl':
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-      'bio': 'Avid hiker and nature lover.',
-      'preferences': ['Hiking', 'Walking'],
+      'bio':
+          'My favorite thing in the world is to climb the most difficult mountain climbs in the world. If you like a challenge, I\'m the one to join!',
+      'preferences': ['Hiking', 'Walking', 'Climbing'],
       'distance': '2.5 miles away',
     },
     {
+      'name': 'Madison',
       'photoUrl':
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-      'bio': 'Enjoys cycling and exploring new cities.',
+      'bio':
+          'I love to go cycling through my city, there\'s nothing better than a warm bike ride through the park there.',
       'preferences': ['Cycling', 'Running'],
       'distance': '5.1 miles away',
     },
     {
+      'name': 'Sophia',
       'photoUrl':
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-      'bio': 'Passionate about swimming and water sports.',
+      'bio':
+          'I\'ve been surfing for years, if you want to know the best beaches, I know the absolute best!',
       'preferences': ['Swimming', 'Surfing'],
       'distance': '1.8 miles away',
     },
     {
+      'name': 'no name',
       'photoUrl':
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
       'bio': 'Loves climbing mountains and challenging themselves.',
@@ -85,6 +105,7 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
       'distance': '3.7 miles away',
     },
     {
+      'name': 'no name',
       'photoUrl':
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
       'bio': 'Enthusiastic about skiing and winter adventures.',
@@ -97,7 +118,9 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
   void initState() {
     super.initState();
     _swipeController = AnimationController(
-      duration: const Duration(milliseconds: 200), // Shorter duration for faster swipe
+      duration: const Duration(
+        milliseconds: 200,
+      ), // Shorter duration for faster swipe
       vsync: this,
     );
     _swipeController.addStatusListener((status) {
@@ -116,8 +139,12 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
         });
       }
     });
-    _swipeAnimation = Tween<Offset>(begin: Offset.zero, end: Offset.zero)
-        .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+    _swipeAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -174,16 +201,24 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
   void _animateSwipe(Offset endOffset) {
     setState(() {
       _isSwiping = true; // Mark that a swipe animation is in progress
-      _swipeAnimation = Tween<Offset>(begin: _dragCurrentOffset, end: endOffset)
-          .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+      _swipeAnimation = Tween<Offset>(
+        begin: _dragCurrentOffset,
+        end: endOffset,
+      ).animate(
+        CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut),
+      );
       _swipeController.reset();
       _swipeController.forward();
     });
   }
 
   void _animateBack() {
-    _swipeAnimation = Tween<Offset>(begin: _dragCurrentOffset, end: Offset.zero)
-        .animate(CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut));
+    _swipeAnimation = Tween<Offset>(
+      begin: _dragCurrentOffset,
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _swipeController, curve: Curves.easeInOut),
+    );
     _swipeController.reset();
     _swipeController.forward();
   }
@@ -238,226 +273,302 @@ class _ProfileSwipePageState extends State<ProfileSwipePage>
           ),
         ],
       ),
-      body: <Widget>[
-        Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-            title: Text(
-              '${widget.userData?['firstname']} ${widget.userData?['lastname']} ',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-          ),
-          body: Stack(
-            children: [
-              if (_profiles.length > 1)
-                Positioned(
-                  top: screenHeight * 0.1,
-                  left: 20,
-                  right: 20,
-                  bottom: screenHeight * 0.2,
-                  child: Opacity(
-                    opacity: 0.8,
-                    child: Transform.scale(
-                      scale: 0.9,
-                      child: IgnorePointer( // Make the card behind non-interactive during swipe
-                        ignoring: _isSwiping,
-                        child: ProfileCard(
-                            profileData: _profiles[
-                                (_currentProfileIndex + 1) % _profiles.length]),
+      body:
+          <Widget>[
+            Scaffold(
+              appBar: AppBar(
+                backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+                title: Text(
+                  'Home',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                centerTitle: true,
+              ),
+              body: Stack(
+                children: [
+                  if (_profiles.length > 1)
+                    Positioned(
+                      top: screenHeight * 0.04,
+                      left: 20,
+                      right: 20,
+                      bottom: screenHeight * 0.04,
+                      child: Opacity(
+                        opacity: 0.8,
+                        child: Transform.scale(
+                          scale: 0.9,
+                          child: IgnorePointer(
+                            // Make the card behind non-interactive during swipe
+                            ignoring: _isSwiping,
+                            child: ProfileCard(
+                              profileData:
+                                  _profiles[(_currentProfileIndex + 1) %
+                                      _profiles.length],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              if (_profiles.isNotEmpty)
-                AnimatedBuilder(
-                  animation: _swipeController,
-                  builder: (context, child) {
-                    final offset = _isDragging
-                        ? _dragCurrentOffset
-                        : _swipeAnimation?.value ?? Offset.zero;
-                    return Positioned(
-                      top: screenHeight * 0.08,
-                      left: 20 + offset.dx,
-                      right: 20 - offset.dx,
-                      bottom: screenHeight * 0.22,
-                      child: GestureDetector(
-                        onPanStart: _startDrag,
-                        onPanUpdate: _updateDrag,
-                        onPanEnd: _endDrag,
-                        child: ProfileCard(
-                            profileData: _profiles[_currentProfileIndex]),
-                      ),
-                    );
-                  },
-                ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FilterBottomSheet(
-                            initialFilters: filters,
-                            initialRadius: _currentRadius,
-                            onFiltersChanged: (newFilters) {
-                              setState(() {
-                                filters = newFilters;
-                              });
-                            },
-                            onRadiusChanged: (newRadius) {
-                              setState(() {
-                                _currentRadius = newRadius;
-                              });
+                  if (_profiles.isNotEmpty)
+                    AnimatedBuilder(
+                      animation: _swipeController,
+                      builder: (context, child) {
+                        final offset =
+                            _isDragging
+                                ? _dragCurrentOffset
+                                : _swipeAnimation?.value ?? Offset.zero;
+                        return Positioned(
+                          top: screenHeight * 0.04,
+                          left: 20 + offset.dx,
+                          right: 20 - offset.dx,
+                          bottom: screenHeight * 0.04,
+                          child: GestureDetector(
+                            onPanStart: _startDrag,
+                            onPanUpdate: _updateDrag,
+                            onPanEnd: _endDrag,
+                            child: ProfileCard(
+                              profileData: _profiles[_currentProfileIndex],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return FilterBottomSheet(
+                                initialFilters: filters,
+                                initialRadius: _currentRadius,
+                                onFiltersChanged: (newFilters) {
+                                  setState(() {
+                                    filters = newFilters;
+                                  });
+                                },
+                                onRadiusChanged: (newRadius) {
+                                  setState(() {
+                                    _currentRadius = newRadius;
+                                  });
+                                },
+                              );
                             },
                           );
                         },
-                      );
-                    },
-                    foregroundColor: Colors.white,
-                    elevation: 20,
-                    backgroundColor: Colors.orange,
-                    shape: const CircleBorder(
-                      side: BorderSide(
-                        color: Color.fromARGB(255, 255, 102, 0),
-                        width: 3,
+                        foregroundColor: Colors.white,
+                        elevation: 20,
+                        backgroundColor: Colors.orange,
+                        shape: const CircleBorder(
+                          side: BorderSide(
+                            color: Color.fromARGB(255, 255, 102, 0),
+                            width: 3,
+                          ),
+                        ),
+                        child: const Icon(Icons.filter_alt),
                       ),
                     ),
-                    child: const Icon(Icons.filter_alt),
+                  ),
+                ],
+              ),
+            ),
+
+            //Messages
+Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+        title: const Text(
+          'Messages',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: 3, // Let's show a few example chats
+        itemBuilder: (BuildContext context, int index) {
+          // Example data for each chat item
+          final String name = ['Amanda', 'John', 'Sarah'][index];
+          const String lastMessage = 'Hey, how are you doing?';
+          const String avatarUrl =
+              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(avatarUrl),
+            ),
+            title: Text(
+              name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: const Text(lastMessage),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatScreen(name: name),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    ),
+
+            Scaffold(
+              appBar: AppBar(
+                backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+                title: Text(
+                  '${widget.userData?['firstname']} ${widget.userData?['lastname']} ',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                centerTitle: true,
+              ),
+              body: Center(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 20),
+                      const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Change Profile Page:',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Select identification',
+                          border: OutlineInputBorder(),
+                        ),
+                        value: _selectedIdentification,
+                        items:
+                            <String>[
+                              'Male',
+                              'Female',
+                              'Non-Binary',
+                              'Other',
+                            ].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedIdentification = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Select your preferences',
+                          border: OutlineInputBorder(),
+                        ),
+                        value: null,
+                        items:
+                            <String>[
+                              'Male',
+                              'Female',
+                              'Non-Binary',
+                              'Other',
+                            ].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            if (newValue != null) {
+                              if (_selectedPreferences.contains(newValue)) {
+                                _selectedPreferences.remove(newValue);
+                              } else {
+                                _selectedPreferences.add(newValue);
+                              }
+                            }
+                          });
+                        },
+                        selectedItemBuilder: (BuildContext context) {
+                          return <String>[
+                            'Male',
+                            'Female',
+                            'Non-Binary',
+                            'Other',
+                          ].map((String value) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _selectedPreferences.join(', '),
+                                style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _bioController,
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          labelText: 'Bio',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _locationController,
+                        decoration: const InputDecoration(
+                          labelText: 'Current Location (e.g., City, State)',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Align(
+                        alignment: Alignment.center,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Save Changes'),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Align(
+                        alignment: Alignment.center,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const App(),
+                              ),
+                            );
+                          },
+                          child: const Text('Sign Out'),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20.0),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-
-        //Messages
-
-       Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-            title: Text(
-              'Messages / ${widget.userData?['firstname']}',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            centerTitle: true,
-          ),
-          body: ListView.builder(
-            itemCount: 5, // Let's show a few example chats
-            itemBuilder: (BuildContext context, int index) {
-              // Example data for each chat item
-              final String name = 'User ${index + 1}';
-              const String lastMessage = 'Hey, how are you doing?';
-              const String avatarUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(avatarUrl),
-                ),
-                title: Text(
-                  name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(lastMessage),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Add navigation to the specific chat screen here
-                  print('Tapped on chat with $name');
-                },
-              );
-            },
-          ),
-        ),
-
-        // Scaffold(
-        //   appBar: AppBar(
-        //     backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-        //     title: Text(
-        //       'Messages / ${widget.userData?['firstname']}',
-        //       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        //     ),
-        //     centerTitle: true,
-        //   ),
-        //   body: ListView.builder(
-        //     reverse: true,
-        //     itemCount: 2,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       if (index == 0) {
-        //         return Align(
-        //           alignment: Alignment.centerRight,
-        //           child: Container(
-        //             margin: const EdgeInsets.all(8.0),
-        //             padding: const EdgeInsets.all(8.0),
-        //             decoration: BoxDecoration(
-        //               color: theme.colorScheme.primary,
-        //               borderRadius: BorderRadius.circular(8.0),
-        //             ),
-        //             child: Text(
-        //               'Hello',
-        //               style: theme.textTheme.bodyLarge!.copyWith(
-        //                 color: theme.colorScheme.onPrimary,
-        //               ),
-        //             ),
-        //           ),
-        //         );
-        //       }
-        //       return Align(
-        //         alignment: Alignment.centerLeft,
-        //         child: Container(
-        //           margin: const EdgeInsets.all(8.0),
-        //           padding: const EdgeInsets.all(8.0),
-        //           decoration: BoxDecoration(
-        //             color: theme.colorScheme.primary,
-        //             borderRadius: BorderRadius.circular(8.0),
-        //           ),
-        //           child: Text(
-        //             'Hi, ${widget.userData?['email']}!',
-        //             style: theme.textTheme.bodyLarge!.copyWith(
-        //               color: theme.colorScheme.onPrimary,
-        //             ),
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
-
-        Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 255, 136, 0),
-            title: const Text(
-              'Profile Name',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-          ),
-          body: Center(
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Save Changes'),
-                ),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const App()),
-                    );
-                  },
-                  child: const Text('Sign Out'),
-                ),
-                const SizedBox(height: 20.0),
-              ],
-            ),
-          ),
-        ),
-      ][currentPageIndex],
+          ][currentPageIndex],
     );
   }
 }
@@ -488,28 +599,37 @@ class ProfileCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16.0),
+            Center(
+              child: Text(
+                profileData['name'] ?? 'No bio available.',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16.0),
             Text(
-              'Biography',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
+              'Bio',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Text(profileData['bio'] ?? 'No bio available.'),
             const SizedBox(height: 16.0),
             Text(
               'Preferences',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Wrap(
               spacing: 8.0,
-              children: (profileData['preferences'] as List<String>?)
-                      ?.map((preference) {
+              children:
+                  (profileData['preferences'] as List<String>?)?.map((
+                    preference,
+                  ) {
                     return Chip(label: Text(preference));
                   }).toList() ??
                   [const Text('No preferences listed.')],
@@ -517,10 +637,9 @@ class ProfileCard extends StatelessWidget {
             const SizedBox(height: 16.0),
             Text(
               'Distance',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
             Text(profileData['distance'] ?? 'Distance not available.'),
@@ -547,6 +666,32 @@ class FilterBottomSheet extends StatefulWidget {
 
   @override
   State<FilterBottomSheet> createState() => _FilterBottomSheetState();
+}
+
+class ChatScreen extends StatelessWidget {
+  final String name;
+
+  const ChatScreen({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 136, 0),
+        title: Text(
+          name,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: const Center(
+        child: Text('Messaging'),
+        // You'll build your actual messaging UI here
+      ),
+    );
+  }
 }
 
 class ChatMessage {
@@ -592,24 +737,25 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
             const SizedBox(height: 10.0),
             Wrap(
-              children: Filter.values.map((Filter exercise) {
-                return FilterChip(
-                  padding: const EdgeInsets.all(8.0),
-                  selectedColor: const Color.fromARGB(255, 255, 178, 114),
-                  label: Text(exercise.name),
-                  selected: filters.contains(exercise),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        filters.add(exercise);
-                      } else {
-                        filters.remove(exercise);
-                      }
-                    });
-                    widget.onFiltersChanged(filters);
-                  },
-                );
-              }).toList(),
+              children:
+                  Filter.values.map((Filter exercise) {
+                    return FilterChip(
+                      padding: const EdgeInsets.all(8.0),
+                      selectedColor: const Color.fromARGB(255, 255, 178, 114),
+                      label: Text(exercise.name),
+                      selected: filters.contains(exercise),
+                      onSelected: (bool selected) {
+                        setState(() {
+                          if (selected) {
+                            filters.add(exercise);
+                          } else {
+                            filters.remove(exercise);
+                          }
+                        });
+                        widget.onFiltersChanged(filters);
+                      },
+                    );
+                  }).toList(),
             ),
             const SizedBox(height: 40.0),
             Text(
