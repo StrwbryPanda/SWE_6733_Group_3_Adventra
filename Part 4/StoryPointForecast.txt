@@ -1,5 +1,5 @@
 Story Point Forecast
-First Sprint: 4/13/25 - 5/1/25
+Sprint: 4/13/25 - 5/1/25
 Projected Points: 25
 
   - Design a matching algorithm
