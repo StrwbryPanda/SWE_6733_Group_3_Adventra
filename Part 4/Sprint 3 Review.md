@@ -1,6 +1,6 @@
 Sprint Review Summary:
 
-Goal of Sprint 2:
+Goal of Sprint 3:
 The goal of our first sprint was to try and ramp up development of the application. We wanted to be able to comfortably interact between the front end and back end.
 We chose three issues to complete (25 story points):  
   - Add feature to allow users to create profile

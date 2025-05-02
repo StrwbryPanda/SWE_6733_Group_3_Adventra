@@ -1,9 +1,0 @@
-Story Point Forecast
-Sprint: 4/13/25 - 5/1/25
-Projected Points: 25
-
-  - Design a matching algorithm
-  - Allow users to securely message each other
-  - Allow users to edit their profile
-
-We project to complete another 25 points of work during Sprint 3. We think we have found the sweet spot for the amount of work we can complete in any given sprint, and have been able to successfully leave enough time for unforeseen problems and delays. While we could potentially push the point toward higher to raise our productivity, the team is very comfortable with the pace we are working at, and see no reason to change it given the success we've found at this rate.
